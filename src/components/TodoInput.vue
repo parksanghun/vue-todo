@@ -4,28 +4,41 @@
         <span class="addContainer" v-on:click="addTodo">
             <i class="fas fa-plus addBtn"></i>
         </span>
+        <Modal v-if="showModal" @close="showModal = false">
+            <h3 slot="header">
+                경고!
+                <i class="closeModalBtn fas fa-times"
+                   @click="showModal=false"></i>
+            </h3>
+            <div slot="body">
+                아무것도 입력하지 않으셨습니다.
+            </div>
+        </Modal>
         <!-- <button @click="addTodo">add</button> -->
     </div>
 </template>
 
 <script>
+import Modal from './common/Modal.vue'
 export default {
-    data:function() {
+    components: {
+        'Modal': Modal
+    },
+    data() {
         return {
+            showModal: false,
             newTodoItem: ""
         }
     },
+    // data:function() {
+    // },
     methods:{
         addTodo:function() {
             if (this.newTodoItem !== '') {
                 this.$emit('add-event', this.newTodoItem);
-                // var obj = {completed: false, item:this.newTodoItem};
-                //JSON.stringify는 object를 json string 으로 변환
-                // localStorage.setItem(this.newTodoItem,JSON.stringify(obj));
                 this.clearInput();
-            //     var value = this.newTodoItem && this.newTodoItem.trim();
-            //     localStorage.setItem(value,value);
-            //     this.clearInput();
+            } else {
+                this.showModal = !this.showModal;
             }
         },
         clearInput:function() {
@@ -60,5 +73,8 @@ input:focus {
 .addBtn {
   color: white;
   vertical-align: middle;
+}
+.closeModalBtn {
+    color: #42b983;
 }
 </style>
