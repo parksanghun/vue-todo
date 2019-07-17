@@ -18,9 +18,10 @@ export default {
     methods:{
         addTodo:function() {
             if (this.newTodoItem !== '') {
-                var obj = {completed: false, item:this.newTodoItem};
+                this.$emit('add-event', this.newTodoItem);
+                // var obj = {completed: false, item:this.newTodoItem};
                 //JSON.stringify는 object를 json string 으로 변환
-                localStorage.setItem(this.newTodoItem,JSON.stringify(obj));
+                // localStorage.setItem(this.newTodoItem,JSON.stringify(obj));
                 this.clearInput();
             //     var value = this.newTodoItem && this.newTodoItem.trim();
             //     localStorage.setItem(value,value);

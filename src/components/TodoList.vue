@@ -2,7 +2,7 @@
     <div>
         <!--ul>li*3 -->
         <ul>
-            <li v-for="(todoItem, index) in todoItems" v-bind:key="todoItem.item" class="shadow">
+            <li v-for="(todoItem, index) in propsData" v-bind:key="todoItem.item" class="shadow">
                 <i class="fas fa-check checkBtn" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
                     v-on:click="toggleComplete(todoItem,index)"></i>
                 <span v-bind:class="{textCompleted: todoItem.completed}">{{todoItem.item}}</span>
@@ -16,35 +16,14 @@
 
 <script>
 export default {
-    data: function() {
-        return {
-            todoItems: []
-        }
-    },
+    props: ['propsData'],
     methods: {
         removeTodo: function(todoItem, index) {
-            localStorage.removeItem(todoItem);
-            this.todoItems.splice(index, 1);
+            this.$emit('remove-event', todoItem, index);
         },
-        toggleComplete: function(todoItem,index) {
-            todoItem.completed = !todoItem.completed;
-            //localStorage에 updateItem 메서드가 없어서 removeItem하고 setItem 한다.
-            localStorage.removeItem(todoItem.item);
-            localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
-        }
-    },
-    /* life cycle method */
-    created: function() {
-        if(localStorage.length > 0){
-            for(var i=0; i < localStorage.length; i++) {
-                if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
-                    console.log(typeof localStorage.getItem(localStorage.key(i)));
-                    console.log( JSON.parse(localStorage.getItem(localStorage.key(i))) );
-                    //JSON.parse()는 json string을 object로 변환
-                    //this.todoItems.push(localStorage.key(i));
-                    this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
-                }
-            }
+        toggleComplete: function(todoItem, index) {
+            this.$emit('toggle-event', todoItem, index);
+
         }
     }
 }

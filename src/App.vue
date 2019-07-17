@@ -1,9 +1,10 @@
 <template>
   <div id="app">
-    <TodoHeader></TodoHeader>
-    <TodoInput></TodoInput>
-    <TodoList></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoHeader />
+    <TodoInput @add-event="addOneItem"/>
+    <!--<TodoInput v-on:addItemEvent="addOneItem"/>-->
+    <TodoList :props-data="todoItems" @remove-event="removeTodo" @toggle-event="toggleComplete"/>
+    <TodoFooter @clear-event="clearList"/>
   </div>
 </template>
 
@@ -19,6 +20,46 @@ export default {
     'TodoInput': TodoInput,
     'TodoList': TodoList,
     'TodoFooter': TodoFooter
+  },
+  data: function() {
+      return {
+          todoItems: []
+      }
+  },
+  created: function() {
+      if(localStorage.length > 0){
+          for(var i=0; i < localStorage.length; i++) {
+              if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
+                  console.log(typeof localStorage.getItem(localStorage.key(i)));
+                  console.log( JSON.parse(localStorage.getItem(localStorage.key(i))) );
+                  //JSON.parse()는 json string을 object로 변환
+                  //this.todoItems.push(localStorage.key(i));
+                  this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+              }
+          }
+      }
+  },
+  methods: {
+      addOneItem(todoItem) {
+          var obj = {completed: false, item:todoItem};
+          localStorage.setItem(todoItem,JSON.stringify(obj));
+          this.todoItems.push(obj);
+      },
+      clearList() {
+          localStorage.clear();
+          this.todoItems = [];
+      },
+      removeTodo(todoItemObj, index) {
+          localStorage.removeItem(todoItemObj.item, index);
+          this.todoItems.splice(index, 1);
+      },
+      toggleComplete(todoItemObj, index) {
+          // todoItem.completed = !todoItem.completed;
+          this.todoItems[index].completed = !todoItemObj.completed;
+          //localStorage에 updateItem 메서드가 없어서 removeItem하고 setItem 한다.
+          localStorage.removeItem(todoItemObj.item);
+          localStorage.setItem(todoItemObj.item, JSON.stringify(todoItemObj));
+      }
   }
 }
 </script>
