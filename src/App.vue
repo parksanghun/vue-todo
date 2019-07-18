@@ -1,10 +1,14 @@
 <template>
   <div id="app">
     <TodoHeader />
-    <TodoInput @add-event="addOneItem"/>
+    <TodoInput></TodoInput>
+    <!--<TodoInput @add-event="addOneItem"/>-->
     <!--<TodoInput v-on:addItemEvent="addOneItem"/>-->
-    <TodoList :props-data="todoItems" @remove-event="removeTodo" @toggle-event="toggleComplete"/>
-    <TodoFooter @clear-event="clearList"/>
+    <!--<TodoList :props-data="todoItems" @remove-event="removeTodo" @toggle-event="toggleComplete"/>-->
+      <!--<TodoList v-on:removeItemEvent="todoItems" v-on:toggleItemEvent="toggleComplete"></TodoList>-->
+    <TodoList></TodoList>
+    <!--<TodoFooter @clear-event="clearList"/>-->
+    <TodoFooter></TodoFooter>
   </div>
 </template>
 
