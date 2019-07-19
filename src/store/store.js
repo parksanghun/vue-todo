@@ -1,7 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+import todoApp from './modules/todoApp.js';
 
 Vue.use(Vuex);
+Vue.use(VueAxios, axios);
 
 const storage = {
     fetch() {
@@ -17,34 +21,8 @@ const storage = {
     },
 };
 export const store = new Vuex.Store({
-    state: {
-        todoItems: storage.fetch()
-    },
-    getters: {
-      getTodoItems(state) {
-          return state.todoItems;
-      }
-    },
-    mutations: {
-        addOneItem(state, todoItem) {
-            const obj = { completed: false, item: todoItem };
-            localStorage.setItem(todoItem,JSON.stringify(obj));
-            state.todoItems.push(obj);
-        },
-        removeOneItem(state, payload) {
-            localStorage.removeItem(payload.todoItem.item);
-            state.todoItems.splice(payload.index, 1);
-        },
-        toggleOneItem(state, payload) {
-            state.todoItems[payload.index].completed = !payload.todoItem.completed;
-            localStorage.removeItem(payload.todoItem.item);
-            localStorage.setItem(payload.todoItem.item, JSON.stringify(payload.todoItem));
-        },
-        removeAllItems(state) {
-            localStorage.clear();
-            state.todoItems = [];
-        }
+    modules: {
+        todoApp
     }
-
 });
 

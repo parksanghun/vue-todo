@@ -10,17 +10,17 @@ let nextId = 4;
 let todos = [
   {
     id: 1,
-    item: 'Todo1',
+    item: '동탁 죽이기',
     completed: false
   },
   {
     id: 2,
-    item: 'Todo2',
+    item: '초선 살리기',
     completed: false
   },
   {
     id: 3,
-    item: 'Todo3',
+    item: '천하통일하기',
     completed: true
   },
 ];

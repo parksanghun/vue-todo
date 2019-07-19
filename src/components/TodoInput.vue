@@ -35,7 +35,9 @@ export default {
     methods:{
         addTodo:function() {
             if (this.newTodoItem !== '') {
-                this.$store.commit('addOneItem', this.newTodoItem);
+                const itemObj = { completed: false, item: this.newTodoItem };
+                this.$store.dispatch('addTodoItem', itemObj);
+                // this.$store.commit('addOneItem', this.newTodoItem);
                 // this.$emit('add-event', this.newTodoItem);
                 this.clearInput();
             } else {
